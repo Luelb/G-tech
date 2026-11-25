@@ -1,0 +1,1388 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Norman Groupies | Prototype C</title>
+
+<style>
+:root{
+--bg:#f4f6fb;
+--card:#fff;
+--ink:#182230;
+--muted:#687386;
+--line:#e4e9f1;
+--blue:#315ee8;
+--green:#16845b;
+--greenbg:#e9f7f0;
+--amber:#a96a08;
+--amberbg:#fff4dc;
+--red:#b54747;
+--redbg:#fff0ef;
+--shadow:0 8px 28px #1822300d
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+background:var(--bg);
+color:var(--ink);
+font:14px/1.45 Inter,system-ui,-apple-system,"Segoe UI",sans-serif
+}
+
+button,input{font:inherit}
+button{cursor:pointer}
+
+.shell{
+max-width:1160px;
+margin:auto;
+padding:26px 20px 42px
+}
+
+header,.brand,.hero,.cardhead,.persontop,.actions,.legend{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px
+}
+
+.brand{justify-content:flex-start}
+
+.mark{
+width:42px;
+height:42px;
+border-radius:13px;
+background:#172b4d;
+color:white;
+display:grid;
+place-items:center;
+font-weight:800
+}
+
+.eyebrow{
+font-size:10px;
+letter-spacing:.12em;
+text-transform:uppercase;
+color:var(--muted);
+font-weight:750
+}
+
+h1{font-size:19px;margin:2px 0}
+h2{font-size:27px;letter-spacing:-.04em;margin:4px 0}
+h3{font-size:15px;margin:0}
+
+.pill{
+border:1px solid var(--line);
+background:white;
+border-radius:99px;
+padding:7px 11px;
+color:var(--muted);
+font-size:11px;
+font-weight:700
+}
+
+.hero{
+align-items:flex-end;
+margin:25px 0 18px
+}
+
+.hero p,.sub{
+color:var(--muted);
+font-size:12px;
+margin:4px 0 0
+}
+
+.hero p{max-width:690px}
+
+.primary,.secondary{
+border-radius:9px;
+padding:9px 13px;
+font-weight:700
+}
+
+.primary{
+border:0;
+background:var(--blue);
+color:white
+}
+
+.secondary{
+border:1px solid var(--line);
+background:white;
+color:var(--ink)
+}
+
+.small{
+font-size:11px;
+padding:7px 10px
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px;
+margin-bottom:14px
+}
+
+.stat,.card{
+background:var(--card);
+border:1px solid var(--line);
+border-radius:14px;
+box-shadow:var(--shadow)
+}
+
+.stat{padding:14px 16px}
+
+.stat label{
+font-size:11px;
+color:var(--muted);
+font-weight:650
+}
+
+.stat b{
+display:block;
+font-size:25px;
+margin-top:3px;
+letter-spacing:-.04em
+}
+
+.stat small{
+color:var(--muted);
+font-size:10px
+}
+
+.layout{
+display:grid;
+grid-template-columns:1.25fr .85fr;
+gap:14px;
+align-items:start
+}
+
+.card{
+padding:17px;
+margin-bottom:14px
+}
+
+.cardhead{margin-bottom:13px}
+
+.sec{
+display:inline-grid;
+place-items:center;
+width:22px;
+height:22px;
+border-radius:7px;
+background:#edf2ff;
+color:var(--blue);
+font-size:10px;
+margin-right:7px
+}
+
+.people{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:9px
+}
+
+.person{
+border:1px solid var(--line);
+border-radius:11px;
+padding:12px
+}
+
+.persontop{
+justify-content:flex-start;
+margin-bottom:8px
+}
+
+.avatar{
+width:30px;
+height:30px;
+border-radius:50%;
+display:grid;
+place-items:center;
+background:#edf1fa;
+color:#354b7c;
+font-weight:800
+}
+
+.person strong{
+display:block;
+font-size:12px
+}
+
+.person small{
+display:block;
+color:var(--muted);
+font-size:10px
+}
+
+.field{
+display:block;
+font-size:10px;
+color:var(--muted);
+font-weight:700;
+margin:8px 0 4px
+}
+
+.person input,.formgrid input{
+width:100%;
+border:1px solid var(--line);
+border-radius:8px;
+padding:7px;
+background:white;
+color:var(--ink);
+font-size:12px
+}
+
+.hint{
+font-size:10px;
+color:var(--muted);
+margin-top:7px
+}
+
+.tablewrap{overflow-x:auto}
+
+table{
+border-collapse:collapse;
+width:100%;
+min-width:530px
+}
+
+th{
+text-align:left;
+font-size:9px;
+text-transform:uppercase;
+letter-spacing:.08em;
+color:var(--muted);
+padding:9px;
+border-bottom:1px solid var(--line)
+}
+
+td{
+padding:10px 9px;
+border-bottom:1px solid #eef1f5;
+font-size:11px
+}
+
+tbody tr:last-child td{border:0}
+
+.status{
+display:inline-block;
+padding:4px 7px;
+border-radius:99px;
+font-size:9px;
+font-weight:750;
+white-space:nowrap
+}
+
+.good{
+background:var(--greenbg);
+color:var(--green)
+}
+
+.caution{
+background:var(--amberbg);
+color:var(--amber)
+}
+
+.bad{
+background:var(--redbg);
+color:var(--red)
+}
+
+.legend{
+justify-content:flex-start;
+flex-wrap:wrap;
+color:var(--muted);
+font-size:10px;
+margin-top:10px
+}
+
+.dot{
+display:inline-block;
+width:7px;
+height:7px;
+border-radius:50%;
+margin-right:4px
+}
+
+.dot.good{background:var(--green)}
+.dot.caution{background:#d58a17}
+.dot.bad{background:var(--red)}
+
+.formgrid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px
+}
+
+.formgrid label{
+font-size:10px;
+color:var(--muted);
+font-weight:700
+}
+
+.formgrid input{
+display:block;
+margin-top:5px;
+padding:9px
+}
+
+.result{
+border:1px solid var(--line);
+border-radius:11px;
+padding:12px;
+margin-top:13px
+}
+
+.warning,.goodnote,.neutral{
+padding:11px;
+border-radius:9px;
+font-size:11px;
+margin-top:10px
+}
+
+.warning{
+background:var(--redbg);
+color:#8e3333
+}
+
+.goodnote{
+background:var(--greenbg);
+color:#176b4d
+}
+
+.neutral{
+background:#f1f4f9;
+color:var(--muted)
+}
+
+.warning strong,.goodnote strong,.neutral strong{
+display:block;
+margin-bottom:3px
+}
+
+.summary{
+display:grid;
+gap:12px
+}
+
+.sumrow{
+display:grid;
+grid-template-columns:65px 1fr 20px;
+gap:8px;
+align-items:center;
+font-size:11px
+}
+
+.bar{
+height:7px;
+background:#eef1f6;
+border-radius:99px;
+overflow:hidden
+}
+
+.bar span{
+height:100%;
+display:block;
+background:#d58a17;
+border-radius:99px
+}
+
+.count{
+text-align:right;
+font-weight:800
+}
+
+.actions{
+justify-content:flex-start;
+flex-wrap:wrap;
+margin-top:10px
+}
+
+.footer{
+text-align:center;
+color:var(--muted);
+font-size:10px;
+padding:12px
+}
+
+.toast{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:#172b4d;
+color:white;
+padding:10px 15px;
+border-radius:9px;
+opacity:0;
+transition:.2s
+}
+
+.toast.show{opacity:1}
+
+@media(max-width:850px){
+.layout{grid-template-columns:1fr}
+.people{grid-template-columns:1fr}
+.stats{grid-template-columns:repeat(2,1fr)}
+.hero{align-items:flex-start;flex-direction:column}
+}
+
+@media(max-width:520px){
+.shell{padding:16px 11px}
+.formgrid{grid-template-columns:1fr}
+.hero h2{font-size:23px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="shell">
+
+<header>
+<div class="brand">
+<div class="mark">NG</div>
+<div>
+<div class="eyebrow">Norman Groupies · CS6750</div>
+<h1>Scheduling Across Time Zones</h1>
+</div>
+</div>
+
+<div>
+<span class="pill">Prototype C</span>
+<span class="pill">Recurring-meeting fairness</span>
+</div>
+</header>
+
+<section class="hero">
+
+<div>
+<div class="eyebrow">Team coordination workspace</div>
+<h2>Recurring Meeting Planner</h2>
+
+<p>
+Review meeting history, understand individual preferences,
+and consider who has repeatedly received inconvenient meeting
+times before proposing the next one.
+</p>
+</div>
+
+<button class="primary" id="addHistoryTop">
+＋ Add past meeting
+</button>
+
+</section>
+
+<section class="stats">
+
+<div class="stat">
+<label>Team members</label>
+<b>3</b>
+<small>Across three time zones</small>
+</div>
+
+<div class="stat">
+<label>Meetings recorded</label>
+<b id="meetingCount">4</b>
+<small>Sample history · editable</small>
+</div>
+
+<div class="stat">
+<label>Outside-preference attendances</label>
+<b id="totalOutside">5</b>
+<small>Across recorded meetings</small>
+</div>
+
+<div class="stat">
+<label>Next proposal</label>
+<b id="proposalStatus" style="font-size:18px">
+Needs review
+</b>
+<small>Organizer makes final decision</small>
+</div>
+
+</section>
+
+<div class="layout">
+
+<main>
+
+<!-- SECTION 1: PREFERENCES -->
+
+<section class="card">
+
+<div class="cardhead">
+
+<div>
+<h3>
+<span class="sec">01</span>
+Team preferences & boundaries
+</h3>
+
+<div class="sub">
+Edit preferred hours in each person's local time.
+Preferences may include evenings or early mornings.
+</div>
+</div>
+
+<button class="secondary small" id="resetPrefs">
+Reset examples
+</button>
+
+</div>
+
+<div class="people" id="people"></div>
+
+<div class="hint">
+Preferred hours are personal preferences, not assumptions
+about standard work hours.
+</div>
+
+</section>
+
+<!-- SECTION 2: HISTORY -->
+
+<section class="card">
+
+<div class="cardhead">
+
+<div>
+<h3>
+<span class="sec">02</span>
+Previous meeting history
+</h3>
+
+<div class="sub">
+Local times are calculated for each participant.
+Amber or red means outside the preferred window.
+</div>
+</div>
+
+<button class="secondary small" id="addHistory">
+＋ Add meeting
+</button>
+
+</div>
+
+<div class="tablewrap">
+
+<table>
+
+<thead>
+<tr>
+<th>Meeting</th>
+<th>Ahmed · Australia</th>
+<th>Luel · Eastern US</th>
+<th>Seyed · Pacific US</th>
+</tr>
+</thead>
+
+<tbody id="historyBody"></tbody>
+
+</table>
+
+</div>
+
+<div class="legend">
+<span><i class="dot good"></i>Within preference</span>
+<span><i class="dot caution"></i>Near boundary</span>
+<span><i class="dot bad"></i>Outside preference</span>
+</div>
+
+<div class="actions">
+<button class="secondary small" id="clearHistory">
+Clear sample history
+</button>
+</div>
+
+</section>
+
+<!-- SECTION 3: PROPOSAL -->
+
+<section class="card">
+
+<div class="cardhead">
+
+<div>
+<h3>
+<span class="sec">03</span>
+Propose the next meeting
+</h3>
+
+<div class="sub">
+Choose a date and time in Eastern US time.
+The prototype converts it for everyone.
+</div>
+</div>
+
+<span class="pill">60 minutes</span>
+
+</div>
+
+<div class="formgrid">
+
+<label>
+Meeting date
+<input type="date" id="meetingDate">
+</label>
+
+<label>
+Start time · Eastern US
+<input type="time" id="meetingTime" value="19:00">
+</label>
+
+</div>
+
+<div class="result">
+
+<div class="cardhead">
+<strong style="font-size:12px">Impact on each participant</strong>
+<span class="sub" id="proposalLocalDate">Proposed time</span>
+</div>
+
+<div class="tablewrap">
+
+<table>
+
+<thead>
+<tr>
+<th>Participant</th>
+<th>Local date & time</th>
+<th>Preference</th>
+<th>History</th>
+</tr>
+</thead>
+
+<tbody id="proposalBody"></tbody>
+
+</table>
+
+</div>
+
+<div id="proposalWarning"></div>
+
+<div class="actions">
+<button class="primary" id="keepProposal">
+Keep this proposal
+</button>
+
+<button class="secondary" id="tryAnother">
+Try another time
+</button>
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+<aside>
+
+<!-- SECTION 4: FAIRNESS HISTORY -->
+
+<section class="card">
+
+<div class="cardhead">
+
+<div>
+<h3>
+<span class="sec">04</span>
+Inconvenience history
+</h3>
+
+<div class="sub">
+Number of recorded meetings outside each person's preferred hours.
+</div>
+</div>
+
+</div>
+
+<div class="summary" id="summaryList"></div>
+
+<div class="warning" style="background:var(--amberbg);color:#76500e">
+
+<strong>What this tells the organizer</strong>
+
+<span id="historyInsight">
+Review whether the same person has repeatedly received
+less convenient times.
+</span>
+
+</div>
+
+<div class="hint">
+These counts are context, not a fairness score.
+They do not capture every personal constraint or
+the degree of inconvenience.
+</div>
+
+</section>
+
+<!-- SECTION 5: ORGANIZER REVIEW -->
+
+<section class="card">
+
+<div class="cardhead">
+
+<div>
+<h3>
+<span class="sec">05</span>
+Organizer's review
+</h3>
+
+<div class="sub">
+Use this information to guide discussion, not automatically
+reject a time.
+</div>
+</div>
+
+</div>
+
+<div class="summary">
+
+<div>
+<strong style="font-size:12px">
+1. Review individual boundaries
+</strong>
+
+<div class="sub">
+Check preferred hours and any hard restrictions.
+</div>
+</div>
+
+<div>
+<strong style="font-size:12px">
+2. Consider previous meetings
+</strong>
+
+<div class="sub">
+Notice whether the same participants repeatedly
+accepted inconvenient times.
+</div>
+</div>
+
+<div>
+<strong style="font-size:12px">
+3. Discuss alternatives
+</strong>
+
+<div class="sub">
+Ask participants about constraints before deciding.
+</div>
+</div>
+
+<div>
+<strong style="font-size:12px">
+4. Confirm with the team
+</strong>
+
+<div class="sub">
+Record the decision after the group agrees.
+</div>
+</div>
+
+</div>
+
+<div class="neutral">
+
+<strong>Design principle</strong>
+
+Equal rotation does not automatically mean fairness.
+Consider individual circumstances rather than relying only on counts.
+
+</div>
+
+</section>
+
+</aside>
+
+</div>
+
+<div class="footer">
+NORMAN GROUPIES · CS6750 HCI GROUP PROJECT · PROTOTYPE C ·
+Sample data for demonstration
+</div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+// PARTICIPANTS
+
+const people = [
+
+{
+id:"ahmed",
+name:"Ahmed",
+initial:"A",
+zone:"Australia",
+tz:"Australia/Sydney",
+start:7,
+end:21,
+note:"Prefers mornings and evenings; late night is difficult."
+},
+
+{
+id:"luel",
+name:"Luel",
+initial:"L",
+zone:"Eastern US",
+tz:"America/New_York",
+start:8,
+end:18,
+note:"Prefers daytime meetings; early mornings and late evenings are difficult."
+},
+
+{
+id:"seyed",
+name:"Seyed",
+initial:"S",
+zone:"Pacific US",
+tz:"America/Los_Angeles",
+start:10,
+end:22,
+note:"Can accommodate later evenings, but very early mornings are difficult."
+}
+
+];
+
+// SAMPLE MEETING HISTORY
+
+let history = [
+
+{label:"Meeting 1",utc:"2026-10-26T15:00:00Z"},
+{label:"Meeting 2",utc:"2026-11-02T14:00:00Z"},
+{label:"Meeting 3",utc:"2026-11-09T16:00:00Z"},
+{label:"Meeting 4",utc:"2026-11-16T15:00:00Z"}
+
+];
+
+// HELPERS
+
+const $ = id => document.getElementById(id);
+
+const pad = n => String(n).padStart(2,"0");
+
+function parts(date,tz){
+
+let a = new Intl.DateTimeFormat("en-US",{
+timeZone:tz,
+year:"numeric",
+month:"2-digit",
+day:"2-digit",
+hour:"2-digit",
+minute:"2-digit",
+hourCycle:"h23",
+weekday:"short"
+}).formatToParts(date);
+
+let o={};
+
+a.forEach(x=>o[x.type]=x.value);
+
+return o;
+}
+
+function hourAt(date,tz){
+
+let p=parts(date,tz);
+
+return +p.hour+(+p.minute)/60;
+
+}
+
+function inside(date,p){
+
+let h=hourAt(date,p.tz);
+
+return h>=p.start&&h<p.end;
+
+}
+
+function status(date,p){
+
+let h=hourAt(date,p.tz);
+
+if(h>=p.start&&h<p.end)
+return["Within preference","good"];
+
+let dist=h<p.start?p.start-h:h-p.end;
+
+return dist<=1.5
+?["Near boundary","caution"]
+:["Outside preference","bad"];
+
+}
+
+function label(date,tz){
+
+return new Intl.DateTimeFormat("en-US",{
+timeZone:tz,
+weekday:"short",
+month:"short",
+day:"numeric",
+hour:"numeric",
+minute:"2-digit"
+}).format(date);
+
+}
+
+function toast(s){
+
+$("toast").textContent=s;
+
+$("toast").classList.add("show");
+
+setTimeout(()=>{
+$("toast").classList.remove("show");
+},2000);
+
+}
+
+// RENDER PARTICIPANTS
+
+function renderPeople(){
+
+$("people").innerHTML=people.map(p=>`
+
+<div class="person">
+
+<div class="persontop">
+
+<div class="avatar">${p.initial}</div>
+
+<div>
+<strong>${p.name}</strong>
+<small>${p.zone}</small>
+</div>
+
+</div>
+
+<label class="field">Preferred start</label>
+
+<input
+type="time"
+value="${pad(p.start)}:00"
+data-person="${p.id}"
+data-field="start"
+>
+
+<label class="field">Preferred end</label>
+
+<input
+type="time"
+value="${pad(p.end)}:00"
+data-person="${p.id}"
+data-field="end"
+>
+
+<div class="hint">${p.note}</div>
+
+</div>
+
+`).join("");
+
+document.querySelectorAll("[data-person]").forEach(e=>{
+
+e.addEventListener("change",()=>{
+
+let p=people.find(x=>x.id===e.dataset.person);
+
+let [h,m]=e.value.split(":").map(Number);
+
+p[e.dataset.field]=h+m/60;
+
+renderAll();
+
+});
+
+});
+
+}
+
+// HISTORY COUNTS
+
+function counts(){
+
+let c={};
+
+people.forEach(p=>c[p.id]=0);
+
+history.forEach(x=>{
+
+let d=new Date(x.utc);
+
+people.forEach(p=>{
+
+if(!inside(d,p))
+c[p.id]++;
+
+});
+
+});
+
+return c;
+
+}
+
+// RENDER HISTORY
+
+function renderHistory(){
+
+$("historyBody").innerHTML=history.length
+
+?history.map(x=>{
+
+let d=new Date(x.utc);
+
+return `
+
+<tr>
+
+<td>
+<strong>${x.label}</strong>
+
+<div class="hint">
+${new Intl.DateTimeFormat("en-US",{
+month:"short",
+day:"numeric",
+year:"numeric",
+timeZone:"UTC"
+}).format(d)}
+</div>
+</td>
+
+${people.map(p=>{
+
+let [s,c]=status(d,p);
+
+return `
+
+<td>
+
+<div>${label(d,p.tz)}</div>
+
+<span class="status ${c}">
+${s}
+</span>
+
+</td>
+
+`;
+
+}).join("")}
+
+</tr>
+
+`;
+
+}).join("")
+
+:
+
+`
+
+<tr>
+<td colspan="4" style="text-align:center;color:var(--muted)">
+No meetings recorded. Add a past meeting to build the history.
+</td>
+</tr>
+
+`;
+
+let c=counts();
+
+let total=Object.values(c).reduce((a,b)=>a+b,0);
+
+$("meetingCount").textContent=history.length;
+
+$("totalOutside").textContent=total;
+
+$("summaryList").innerHTML=people.map(p=>{
+
+let n=c[p.id];
+
+let pct=history.length?100*n/history.length:0;
+
+return `
+
+<div class="sumrow">
+
+<strong>${p.name}</strong>
+
+<div class="bar">
+<span style="width:${pct}%"></span>
+</div>
+
+<span class="count">${n}</span>
+
+</div>
+
+`;
+
+}).join("");
+
+let max=Math.max(0,...Object.values(c));
+
+let names=people
+.filter(p=>c[p.id]===max&&max>0)
+.map(p=>p.name);
+
+$("historyInsight").textContent=max
+
+?`${names.join(" and ")} ${names.length===1?"has":"have"} the highest count of meetings outside preferred hours (${max} of ${history.length}). Review the circumstances with the team.`
+
+:"No recorded meeting falls outside current preferred hours. Keep recording meetings to build a useful picture.";
+
+}
+
+// CONVERT EASTERN TIME TO UTC
+
+function localToUTC(ds,ts,tz){
+
+let[y,m,d]=ds.split("-").map(Number);
+
+let[h,n]=ts.split(":").map(Number);
+
+let guess=new Date(Date.UTC(y,m-1,d,h,n));
+
+for(let i=0;i<4;i++){
+
+let p=parts(guess,tz);
+
+let actual=Date.UTC(
++p.year,
++p.month-1,
++p.day,
++p.hour,
++p.minute
+);
+
+let desired=Date.UTC(y,m-1,d,h,n);
+
+guess=new Date(guess.getTime()+desired-actual);
+
+}
+
+return guess;
+
+}
+
+// GET PROPOSED MEETING
+
+function proposal(){
+
+return $("meetingDate").value&&$("meetingTime").value
+
+?localToUTC(
+$("meetingDate").value,
+$("meetingTime").value,
+"America/New_York"
+)
+
+:null;
+
+}
+
+// RENDER PROPOSAL
+
+function renderProposal(){
+
+let d=proposal();
+
+if(!d)return;
+
+let c=counts();
+
+let outside=people.filter(p=>!inside(d,p));
+
+let repeat=outside.filter(p=>c[p.id]>0);
+
+$("proposalLocalDate").textContent=
+label(d,"America/New_York");
+
+$("proposalBody").innerHTML=people.map(p=>{
+
+let[s,k]=status(d,p);
+
+return `
+
+<tr>
+
+<td>
+<strong>${p.name}</strong>
+<div class="hint">${p.zone}</div>
+</td>
+
+<td>${label(d,p.tz)}</td>
+
+<td>
+<span class="status ${k}">${s}</span>
+</td>
+
+<td>${c[p.id]} outside-preference</td>
+
+</tr>
+
+`;
+
+}).join("");
+
+$("proposalWarning").innerHTML=outside.length
+
+?
+
+`
+
+<div class="warning">
+
+<strong>⚠ Review this proposed time</strong>
+
+${outside.map(p=>p.name+" is outside their preferred hours").join("; ")}.
+
+${repeat.length
+
+? " "+repeat.map(p=>p.name+" also has "+c[p.id]+" previous outside-preference meeting(s)").join("; ")+"."
+
+:""}
+
+This is a prompt for organizer review, not automatic rejection.
+
+</div>
+
+`
+
+:
+
+`
+
+<div class="goodnote">
+
+<strong>Everyone is within their preferred hours.</strong>
+
+Still confirm that the time works for the whole team.
+
+</div>
+
+`;
+
+$("proposalStatus").textContent=
+outside.length?"Needs review":"Within preferences";
+
+}
+
+// RENDER EVERYTHING
+
+function renderAll(){
+
+renderPeople();
+
+renderHistory();
+
+renderProposal();
+
+}
+
+// ADD MEETING TO HISTORY
+
+function addMeeting(){
+
+let d=proposal();
+
+if(!d){
+
+toast("Choose a date and time first.");
+
+return;
+
+}
+
+history.push({
+
+label:"Meeting "+(history.length+1),
+
+utc:d.toISOString()
+
+});
+
+renderAll();
+
+toast("Meeting added to history.");
+
+}
+
+// BUTTON EVENTS
+
+$("addHistory").onclick=addMeeting;
+
+$("addHistoryTop").onclick=addMeeting;
+
+$("clearHistory").onclick=()=>{
+
+history=[];
+
+renderAll();
+
+toast("Sample history cleared.");
+
+};
+
+$("resetPrefs").onclick=()=>{
+
+[[7,21],[8,18],[10,22]].forEach((v,i)=>{
+
+people[i].start=v[0];
+
+people[i].end=v[1];
+
+});
+
+renderAll();
+
+toast("Example preferences restored.");
+
+};
+
+$("meetingDate").onchange=renderProposal;
+
+$("meetingTime").onchange=renderProposal;
+
+$("keepProposal").onclick=()=>{
+
+toast("Proposal noted. Confirm with the team before finalizing.");
+
+};
+
+$("tryAnother").onclick=()=>{
+
+let e=$("meetingTime");
+
+let[h,m]=e.value.split(":").map(Number);
+
+e.value=pad((h+1)%24)+":"+pad(m);
+
+renderProposal();
+
+toast("Showing the next hourly option.");
+
+};
+
+// INITIALIZE
+
+let now=new Date();
+
+$("meetingDate").value=
+`${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+
+renderAll();
+
+</script>
+
+</body>
+</html>
